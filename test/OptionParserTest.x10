@@ -20,7 +20,8 @@ class OptionParserTest {
     assert OptionParser.getLong("CARAVAN_TIMEOUT") == Long.parse(opts(1)(2));
     assert OptionParser.getLong("CARAVAN_SEND_RESULT_INTERVAL") == Long.parse(opts(2)(2));
     assert OptionParser.getString("CARAVAN_WORK_BASE_DIR") == opts(3)(2);
-    assert OptionParser.getLong("CARAVAN_LOG_LEVEL") == Long.parse(opts(4)(2));
+    assert OptionParser.getString("CARAVAN_TIMEOUT_CMD") == opts(4)(2);
+    assert OptionParser.getLong("CARAVAN_LOG_LEVEL") == Long.parse(opts(5)(2));
 
     val detected = OptionParser.detectedOptions();
     assert detected.size() == 0 : detected;

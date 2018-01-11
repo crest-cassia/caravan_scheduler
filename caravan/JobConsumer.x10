@@ -101,7 +101,8 @@ class JobConsumer {
     val taskId = task.taskId;
     val startAt = m_timer.milliTime();
     val runPlace = here.id;
-    val rcResults = task.run();
+    val duration = remainingTimeInSec();
+    val rcResults = task.run(duration, m_logger);
     val rc = rcResults.first;
     val results = rcResults.second;
     val finishAt = m_timer.milliTime();
@@ -128,6 +129,13 @@ class JobConsumer {
         }
       }
     });
+  }
+
+  private def remainingTimeInSec(): Long {
+    if( m_timeOut <= 0 ) { return -1; }
+    else {
+      return (m_timeOut - m_timer.milliTime())/1000 as Long;
+    }
   }
 
   private def isExpired(): Boolean {

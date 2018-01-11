@@ -10,6 +10,7 @@ public class OptionParser {
     ["CARAVAN_TIMEOUT", "timeout duration in sec", "86400"],
     ["CARAVAN_SEND_RESULT_INTERVAL", "interval to send results in sec", "3"],
     ["CARAVAN_WORK_BASE_DIR", "the directory under which work directories are created", "."],
+    ["CARAVAN_TIMEOUT_CMD", "timeout command. If the system has 'timeout' or 'gtimeout', specify it. You may also add an option like 'timeout -k 30'. If this is not given, timeout is not used.", ""],
     ["CARAVAN_LOG_LEVEL", "log level", "1"]
   ];
 
