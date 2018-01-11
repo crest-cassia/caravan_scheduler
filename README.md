@@ -1,6 +1,6 @@
 # CARAVAN Scheduler
 
-The scheduler part of CARAVAN framework.
+The scheduler part of [CARAVAN](https://github.com/crest-cassia/caravan) framework.
 
 ## Building the scheduler
 
