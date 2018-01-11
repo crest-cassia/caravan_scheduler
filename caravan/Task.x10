@@ -28,10 +28,10 @@ public struct Task( taskId: Long, cmd: String ) {
   @Native("c++", "getCWD()")
   public native static def getCWD(): String;
 
-  public def run(): Pair[Long,Rail[Double]] {
+  public def run( duration:Long, logger: Logger ): Pair[Long,Rail[Double]] {
     val cwd = getCWD();
     if( cwd.length() == 0n ) {
-      Console.ERR.println("[ERROR] failed to cwd");
+      logger.e("[ERROR] failed to cwd");
       throw new Exception("cwd failed");
     }
 
@@ -39,21 +39,23 @@ public struct Task( taskId: Long, cmd: String ) {
     val work_dir = workDirPath();
     err = mkdir_p( workDirPath() );
     if( err != 0n ) {
-      Console.ERR.println("[ERROR] failed to mkdir " + work_dir );
+      logger.e("[ERROR] failed to mkdir " + work_dir );
       throw new Exception("mkdir failed");
     }
 
     err = chdir(work_dir);
     if( err != 0n ) {
-      Console.ERR.println("[ERROR] failed to chdir " + work_dir );
+      logger.e("[ERROR] failed to chdir " + work_dir );
       throw new Exception("chdir failed");
     }
 
-    val rc = system( cmd );
+    val cmd_with_timeout = commandWithTimeout(duration);
+    if( here.id == 2 ) { logger.d("executing: " + cmd_with_timeout); }
+    val rc = system( cmd_with_timeout );
 
     err = chdir(cwd);
     if( err != 0n ) {
-      Console.ERR.println("[ERROR] failed to chdir " + cwd );
+      logger.e("[ERROR] failed to chdir " + cwd );
       throw new Exception("chdir failed");
     }
 
@@ -91,6 +93,16 @@ public struct Task( taskId: Long, cmd: String ) {
 
   public def resultsFilePath(): String {
     return workDirPath() + "/_results.txt";
+  }
+
+  public def commandWithTimeout(duration:Long): String {
+    val toutcmd = OptionParser.getString("CARAVAN_TIMEOUT_CMD");
+    if( toutcmd.length() > 0 && duration > 0 ) {
+      return String.format("%s %d %s", [toutcmd, duration, cmd as Any]);
+    }
+    else {
+      return cmd;
+    }
   }
   
   public def toString(): String {
