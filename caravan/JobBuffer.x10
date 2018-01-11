@@ -25,7 +25,7 @@ class JobBuffer {
     m_refProducer = _refProducer;
     m_numConsumers = _numConsumers;
     m_logger = new Logger( refTimeForLogger );
-    m_sendInterval = OptionParser.get("CARAVAN_SEND_RESULT_INTERVAL") * 1000;
+    m_sendInterval = OptionParser.getLong("CARAVAN_SEND_RESULT_INTERVAL") * 1000;
     saveResultsDone();
   }
 

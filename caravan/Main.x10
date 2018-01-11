@@ -13,8 +13,8 @@ class Main {
 
     OptionParser.printDetectedOptions();
 
-    val numProcPerBuf: Long = OptionParser.get("CARAVAN_NUM_PROC_PER_BUF");
-    val timeOut: Long = OptionParser.get("CARAVAN_TIMEOUT") * 1000;
+    val numProcPerBuf: Long = OptionParser.getLong("CARAVAN_NUM_PROC_PER_BUF");
+    val timeOut: Long = OptionParser.getLong("CARAVAN_TIMEOUT") * 1000;
 
     val m = new Administrator();
     m.run( args, timeOut, numProcPerBuf );

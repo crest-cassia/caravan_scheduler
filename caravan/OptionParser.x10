@@ -6,10 +6,11 @@ import x10.util.ArrayList;
 public class OptionParser {
 
   static public val availableOptions = [
-    ["CARAVAN_NUM_PROC_PER_BUF", "# of consumer processes for each buffer proc", 384],
-    ["CARAVAN_TIMEOUT", "timeout duration in sec", 86400],
-    ["CARAVAN_SEND_RESULT_INTERVAL", "interval to send results in sec", 3],
-    ["CARAVAN_LOG_LEVEL", "log level", 1]
+    ["CARAVAN_NUM_PROC_PER_BUF", "# of consumer processes for each buffer proc", "384"],
+    ["CARAVAN_TIMEOUT", "timeout duration in sec", "86400"],
+    ["CARAVAN_SEND_RESULT_INTERVAL", "interval to send results in sec", "3"],
+    ["CARAVAN_WORK_BASE_DIR", "the directory under which work directories are created", "."],
+    ["CARAVAN_LOG_LEVEL", "log level", "1"]
   ];
 
   static public def printHelp() {
@@ -22,7 +23,7 @@ public class OptionParser {
   static public def detectedOptions(): ArrayList[String] {
     val ret = new ArrayList[String]();
     for( opt in availableOptions ) {
-      val key = opt(0) as String;
+      val key = opt(0);
       val n = System.getenv(key);
       if( n != null ) {
         ret.add(key);
@@ -39,24 +40,29 @@ public class OptionParser {
     }
   }
 
-  static public def get( key: String ): Long {
+  static public def getString( key: String ): String {
     for( x in availableOptions ) {
-      val k = x(0) as String;
+      val k = x(0);
       if( key.equals(k) ) {
-        return getLongOption( key, x(2) as Long );
+        return get(key, x(2));
       }
     }
     Console.ERR.println("[Error] Unknown option : " + key);
     throw new Exception("invalid option");
   }
 
-  static def getLongOption( envKey: String, defaultValue: Long ): Long {
+  static public def getLong( key: String ): Long {
+    val s = getString(key);
+    return Long.parse(s);
+  }
+
+  static private def get( envKey: String, defaultValue: String ): String {
     val n = System.getenv(envKey);
     if( n == null ) {
       return defaultValue;
     }
     else {
-      return Long.parse(n);
+      return n;
     }
   }
 }

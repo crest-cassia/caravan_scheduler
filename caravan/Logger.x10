@@ -9,7 +9,7 @@ public class Logger {
 
   public def this( refTime: Long ) {
     m_refTime = refTime;
-    m_logLevel = OptionParser.get("CARAVAN_LOG_LEVEL");
+    m_logLevel = OptionParser.getLong("CARAVAN_LOG_LEVEL");
   }
 
   private def t():Long {
