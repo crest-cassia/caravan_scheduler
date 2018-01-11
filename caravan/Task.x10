@@ -85,7 +85,8 @@ public struct Task( taskId: Long, cmd: String ) {
   }
 
   public def workDirPath(): String {
-    return String.format("./w%04d/w%07d", [taskId/1000, taskId as Any]);
+    val base = OptionParser.getString("CARAVAN_WORK_BASE_DIR");
+    return String.format("%s/w%04d/w%07d", [base, taskId/1000, taskId as Any]);
   }
 
   public def resultsFilePath(): String {
