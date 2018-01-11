@@ -1,6 +1,7 @@
 package test;
 
 import caravan.Task;
+import caravan.Logger;
 import x10.io.File;
 
 class TaskTest {
@@ -32,7 +33,7 @@ class TaskTest {
     p( task.toString() );
     assert task.taskId == taskId;
 
-    val out = task.run();
+    val out = task.run(-1, new Logger(0));
 
     assert out.first == 0;
     assert cmp(out.second, [132.0, 1.0, 2.0, 3.0, 1234.0]) : out.second;
@@ -50,7 +51,7 @@ class TaskTest {
     val task = Task( taskId, cmd );
 
     assert task.taskId == taskId;
-    val out = task.run();
+    val out = task.run(-1, new Logger(0));
 
     assert out.first == 0;
     assert out.second.size == 0; // empty Rail
