@@ -1,0 +1,24 @@
+env:
+- NPROC=4
+install:
+- ./travis/buildx10.sh
+before_script:
+- export PATH=$PWD/x10/x10.dist/bin:$PATH
+script:
+- cd test
+- ./build.sh
+- ./build/a.out
+- cd --
+- ./build.sh
+cache:
+  directories:
+  - x10/x10.dist
+deploy:
+  provider: releases
+  api_key:
+    secure: g3IcV6URss9Xeu92knjvVsbAd+rsw0OjWAISMHsCjLkcjiZ5iCxo45TsqTmNyIDz8sIxl5vIN7zNHFwWisIBKIG/Wwz0P1lhATgo4V8Hmbz8J8hcDs/drV2eev5Syd7tTvMDhx5jt4E0+0EZ7LH4VdYkf4HHwzpc5RzCTj0Mq9ISee/U6SBxdVOJwP8g7aweStipy/Tp6N1gSTwNVzeRON+zzj8rSUkuDtkrMiO98IibJZSSyKlcnQR/Cv/N33Dq05rtsxyD/dD9pj4rLwBk+/jQfiVrP5s2MS3JGWiWaBUGEtsiqCAruVECzT6eNd1DP4iUi0oPI5QRb723TXMXV21ezESKihTdEv4PsZalumUmSw/Q+nAQJR6EucGL8PkwPFh77xMbgwA/z7j0GrAzs/l8HNhzl/N+Yq6jP0dUnWcbq3fjAWYXXkdPgBmnRQZVI7JQNfjm64ZCuwMLcIDOThd//JWFfIFOOT3K1+CtGSGUbtUBR1cGH3Gdmu5GO7A9igE0khaSHqF3b/eJ19YskcgZ6zXM0uiZeDdwgyPPxaS8gmphItHN406NANSCWODizzDdEH8HEL1RvUFLT5aoNnn1EFZ5yS9WiVUDIyME47B8C5q3vgCRwv3ly6jjFu4ojXGisdCtX6+1F1r7GFuEBF6unRN8oQvBqsHcNeUGdPI=
+  file: scheduler
+  skip_cleanup: true
+  on:
+    repo: crest-cassia/caravan_scheduler
+    tags: true
