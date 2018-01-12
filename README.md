@@ -1,5 +1,7 @@
 # CARAVAN Scheduler
 
+[![Travis](https://img.shields.io/travis/crest-cassia/caravan_scheduler/master.svg)](https://travis-ci.org/crest-cassia/caravan_scheduler)
+
 The scheduler part of [CARAVAN](https://github.com/crest-cassia/caravan) framework.
 
 ## Building the scheduler
