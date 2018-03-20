@@ -134,13 +134,17 @@ class JobBuffer {
     atomicDo ( ()=>{
       m_resultsBuffer.addAll( results );
       m_numRunning.addAndGet( -results.size );
-      if( m_resultsBuffer.size() > 0 && isReadyToSendResults() ) {
-        warnForLongProc(5, "asyncSendResultsToProducer", () => {
-          asyncSendResultsToProducer();
-        });
-      }
+      sendResultsIfReady();
       d("Buffer has saved " + results.size + " results from " + consPlace);
     });
+  }
+
+  private def sendResultsIfReady() {
+    if( m_resultsBuffer.size() > 0 && isReadyToSendResults() ) {
+      warnForLongProc(5, "asyncSendResultsToProducer", () => {
+        asyncSendResultsToProducer();
+      });
+    }
   }
 
   private def asyncSendResultsToProducer() {
@@ -156,6 +160,10 @@ class JobBuffer {
       at( refBuf ) async {
         refBuf().saveResultsDone(); // notify the finish of saving
         refBuf().d("Buffer finished sending results to Producer");
+        refBuf().atomicDo ( ()=>{
+          // sending results sent during communicating with producer
+          refBuf().sendResultsIfReady();
+        });
       }
     }
   }
