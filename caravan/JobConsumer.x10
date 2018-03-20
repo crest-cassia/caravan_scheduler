@@ -113,7 +113,7 @@ class JobConsumer {
   private def readyToSendResults(): Boolean {
     if( m_tasks.size() == 0 ) { return true; }
     val now = m_timer.milliTime();
-    return ( now - m_lastResultSendTime > m_sendInterval );
+    return ( now - m_lastResultSendTime >= m_sendInterval );
   }
 
   def getTasksFromBufferOrRegisterFreePlace() {

@@ -175,7 +175,7 @@ class JobBuffer {
     if( m_numRunning.get() + qSize == 0 ) { return true; }
     if( m_sendingResults == true ) { return false; }
     val now = m_timer.milliTime();
-    return ( now - m_lastResultSendTime > m_sendInterval );
+    return ( now - m_lastResultSendTime >= m_sendInterval );
   }
 
   private def registerFreePlace( freePlace: Place, timeOut: Long ) {
