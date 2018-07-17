@@ -63,7 +63,6 @@ class JobProducer {
     m_taskQueue.pushLast( tasks.toRail() );
     if( m_taskQueue.empty() ) {
       e("No task was created when initializing JobProducer");
-      throw new Exception("no task to execute");
     }
   }
 
