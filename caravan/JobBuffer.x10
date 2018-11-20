@@ -62,6 +62,7 @@ class JobBuffer {
       m_inAtomic = false;
     }
   }
+  // All private methods must be called in `atomicDo`
 
   public def getInitialTasksAndLaunchConsumers() {
     atomicDo( ()=> {
