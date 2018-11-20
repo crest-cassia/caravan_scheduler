@@ -115,12 +115,10 @@ class JobConsumer {
     val consPlace = here;
     val refCons = new GlobalRef[JobConsumer]( this );
     warnForLongProc("popTasks", () => {
-      finish at( refBuf ) async {
-        val tasks = refBuf().popTasksOrRegisterFreePlace( consPlace, timeOut );
-        at( refCons ) async {
-          refCons().m_tasks.pushLast( tasks );
-        }
-      }
+      val tasks = at( refBuf ) {
+        return refBuf().popTasksOrRegisterFreePlace( consPlace, timeOut );
+      };
+      m_tasks.pushLast(tasks);
     });
   }
 
