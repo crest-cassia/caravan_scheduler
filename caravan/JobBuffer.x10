@@ -63,7 +63,7 @@ class JobBuffer {
     }
   }
 
-  public def getInitialTasks() {
+  public def getInitialTasksAndLaunchConsumers() {
     atomicDo( ()=> {
       fillTaskQueue();
     });
