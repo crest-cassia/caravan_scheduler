@@ -89,14 +89,10 @@ class JobBuffer {
     val numCons = m_numConsumers;
 
     warnForLongProc(5,"fillTaskQueue", () => {
-      val reducer = new ReducibleTaskRail();
-      val rtasks = finish (reducer) {
-        at( refProd ) async {
-          val tasks = refProd().popTasksOrRegisterFreeBuffer( refBuf, numCons );
-          offer tasks;
-        }
+      val tasks = at(refProd) {
+        return refProd().popTasksOrRegisterFreeBuffer(refBuf, numCons);
       };
-      for( task in rtasks ) {
+      for( task in tasks ) {
         m_taskQueue.pushLast( task );
       }
     });
