@@ -60,14 +60,16 @@ class JobConsumer {
     d("Consumer got initial tasks from buffer");
 
     while( m_tasks.size() > 0 ) {
-      if( isExpired() ) { return; }
+      val b = isExpired();
 
-      val task = m_tasks.popFirst();
-      val result = runTask( task );
-      m_results.add( result );
-      d("Consumer finished task " + task.taskId);
+      if( !b ) {
+        val task = m_tasks.popFirst();
+        val result = runTask( task );
+        m_results.add( result );
+        d("Consumer finished task " + task.taskId);
+      }
 
-      if( readyToSendResults() || isExpired() ) {
+      if( readyToSendResults() || b ) {
         val results = m_results.toRail();
         m_results.clear();
         warnForLongProc("saveResutls", () => {
@@ -77,9 +79,9 @@ class JobConsumer {
           }
           saveResultsDone();
           d("saveResults done");
+          if(b) { return; }
         });
       }
-      if( isExpired() ) { return; }
 
       if( m_tasks.size() == 0 ) {
         d("Consumer task queue is empty. getting tasks");
