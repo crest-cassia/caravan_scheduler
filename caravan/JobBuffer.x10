@@ -53,7 +53,7 @@ class JobBuffer {
     }
   }
 
-  private def atomicDo( proc: ()=>void ) {
+  public def atomicDo( proc: ()=>void ) {
     when( m_inAtomic == false ) {
       m_inAtomic = true;
     }
@@ -168,6 +168,7 @@ class JobBuffer {
   private def isReadyToSendResults(): Boolean {
     // to finalize the program,
     // we have to send results whenever all tasks have finished.
+    if( m_freePlaces.size() == m_numConsumers ) { return true; }
     val qSize = m_taskQueue.size();
     if( m_numRunning.get() + qSize == 0 ) { return true; }
     if( m_sendingResults == true ) { return false; }
@@ -175,7 +176,7 @@ class JobBuffer {
     return ( now - m_lastResultSendTime >= m_sendInterval );
   }
 
-  private def registerFreePlace( freePlace: Place, timeOut: Long ) {
+  public def registerFreePlace( freePlace: Place, timeOut: Long ) {
     d("Buffer registering free consumer " + freePlace );
     m_freePlaces.add( Pair[Place,Long](freePlace, timeOut) );
     d("Buffer registered free consumer " + freePlace );

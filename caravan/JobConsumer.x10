@@ -75,12 +75,17 @@ class JobConsumer {
         warnForLongProc("saveResutls", () => {
           val refCons = new GlobalRef[JobConsumer]( this );
           at( refBuf ) {
+            if(b) {
+              refBuf().atomicDo( () => {
+                refBuf().registerFreePlace( here, m_timeOut );
+              });
+            }
             refBuf().saveResults( results, refCons.home );
           }
           saveResultsDone();
           d("saveResults done");
-          if(b) { return; }
         });
+        if(b) { return; }
       }
 
       if( m_tasks.size() == 0 ) {
