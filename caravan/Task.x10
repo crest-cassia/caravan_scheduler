@@ -50,7 +50,8 @@ public struct Task( taskId: Long, cmd: String ) {
     }
 
     val cmd_with_timeout = commandWithTimeout(duration);
-    if( here.id == 2 ) { logger.d("executing: " + cmd_with_timeout); }
+    logger.d("executing: " + cmd_with_timeout);
+    // if( here.id == 2 ) { logger.d("executing: " + cmd_with_timeout); }
     val rc = system( cmd_with_timeout );
 
     err = chdir(cwd);
@@ -97,7 +98,7 @@ public struct Task( taskId: Long, cmd: String ) {
 
   public def commandWithTimeout(duration:Long): String {
     val toutcmd = OptionParser.getString("CARAVAN_TIMEOUT_CMD");
-    if( toutcmd.length() > 0 && duration > 0 ) {
+    if( toutcmd.length() > 0 && duration >= 0 ) {
       return String.format("%s %d %s", [toutcmd, duration, cmd as Any]);
     }
     else {

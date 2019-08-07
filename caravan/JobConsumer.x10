@@ -27,7 +27,8 @@ class JobConsumer {
   }
 
   private def d(s:String) {
-    if( here.id == 2 ) { m_logger.d(s); }
+    // if( here.id == 2 ) { m_logger.d(s); }
+    m_logger.d(s);
   }
 
   private def w(s:String) {
@@ -125,7 +126,8 @@ class JobConsumer {
   private def remainingTimeInSec(): Long {
     if( m_timeOut <= 0 ) { return -1; }
     else {
-      return (m_timeOut - m_timer.milliTime())/1000 as Long;
+      val d = (m_timeOut - m_timer.milliTime())/1000 as Long;
+      return (d > 0) ? d : 1;
     }
   }
 
